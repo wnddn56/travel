@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <!----- Google Maps Script ----------->
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g"></script> -->
+
+
+  <!----------- jQuery -------------->
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <!-------- js_외부파일 ------------->
+  
+  <!-- Leaflet (무료/키 불필요) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="js/tr_map4.js" defer></script>
+  <script src="js/tr_reviews3.js" defer></script> 
+  <script src="js/tr_rating.js" defer></script>
+  <script src="js/tr_main.js" defer></script> 
+
+<!------- css_외부파일 ------------>
+  
+  <link rel="stylesheet" href="css/tr_base.css">
+  <link rel="stylesheet" href="css/tr_layout.css">
+  <link rel="stylesheet" href="css/tr_components.css">
+  <link rel="stylesheet" href="css/tr_rating.css"> 
+
+<!----------- font --------------->
+  
+<!--<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mansalva&display=swap" rel="stylesheet"> -->
+
+<!------------------- 여기까지 외부 파일 -------------------------->
+
+
+  <script>
+    /*
+      1. 지도에 마커 찍으면 후기 작성 div 보이기
+      2. 작성 완료되면 작성div는 안보이고 내용 보이기
+      3. 펼치기접기
+      5. ⁝ 클릭시 수정삭제 버튼 노출
+      6. 별점기능 (별점 제어 스트립트 별점 값에 따른 문구 반영, 평균별점 갱신, 리스트 누적 표시(실시간 계산/DOM 반영))
+      7. 후기칸 반복 생성 & 초기화 (동적으로 입력칸/카드 추가/제거)
+      8. 지도 핀 선택 시 장소명 연동(지도 SDK 이벤트 → DOM 업데이트) / API를 호출해 쓰려면 JS(또는 서버 코드)**가 필요
+      9. 키보드 접근 스트립트 - 엔터누르면 글작성 되게
+      10. 최신글이 위로 오게 (prepend list.prepend(li); box.querySelector('.tr_count').textContent = list.children.length;)
+      11. 공유 or 스크립트
+    */
+  </script>
+</head>
+<body>
+  <!------------------- nav menu들어갈 자리 ---------------------------->
+
+
+  <!------------ header(제목)이게 nav menu랑 통합되어야하는지??------------------->
+  <div id="trmp_container">
+    <div id="trmp_header">
+      <h2>My page</h2>
+    </div>
+
+  <!------------------------- map section ---------------------------->
+
+    <div id="trmp_body">
+      <!--지도 영역 -->
+      <div id="trmp_map"></div>
+
+  <!------------리뷰 section(등록된 리뷰 & 리뷰 등록 2가지 section) ------------------>
+  
+      <!--후기 영역-->
+      <div>
+        <ul class="trmp_review_list">
+          <!--후기 작성시 동적 li 추가-->
+          <li>
+            <div class="trmp_card">
+              <!--리뷰 헤드 = 제목(마커로 찍은 지역명) / 펼쳐보기 버튼-->
+              <div class="trmp_card_head">
+                <h3><a class="trmp_place_link" href="#" target="_blank" rel="noopener">제목</a></h3>
+                <div class="trmp_expend_btn_area">
+                  <button>
+                    <img src="img/down.png" width="30">
+                  </button>
+                </div>
+              </div>
+              <!--리뷰 컨텐츠 = 수정삭제 버튼 / 내용 /등록날짜-->
+              <div class="trmp_card_body off">
+                  <!--게시글 노출-->
+                  <div class="trmp_content_area" style="display: none;">
+                    <div class="trmp_content_view_area">
+                      <!--내용 노출되는 곳-->
+                    </div>
+                    <!--수정삭제 버튼영역-->
+                    <div class="trmp_btn_area">
+                      <button class="trmp_set_btn">⁝</button>
+                      <!--display none 처리 후 버튼 클릭시 노출되게-->
+                      <ul class="trmp_btn_ul">
+                        <li>수정</li>
+                        <li>삭제</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--게시글 작성-->
+                  <div class="trmp_content_write_area">
+                    <!--내용작성-->
+
+ <!------------------------별점-------------------------------->
+                    <div>
+                      <form class="tr_starForm" autocomplete="off">
+                    <div>
+                      <strong>별점</strong>
+                      <!-- WAI-ARIA: role="radiogroup" + 각 버튼 role="radio" -->
+                      <div class="tr_starBox" role="radiogroup" aria-label="별점 선택">
+                        <button type="button" data-val="1" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="2" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="3" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="4" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="5" aria-checked="false" role="radio">★</button>
+                        <input type="hidden" name="rating" class="tr_ratingVal" value="0"> <!-- 실제 전송 값 -->
+                      </div>
+                    </div>
+
+                    <!--<p class="tr_ratingLive" aria-live="polite"></p> 실시간 상태 안내 -->
+                    </div>
+                  </form>
+              
+ <!------------------------별점-------------------------------->
+
+
+                    <div class="trmp_text_area_box">
+                      <textarea class="trmp_text_area" rows="6"></textarea>
+                    </div>
+                    <!--파일첨부-->
+                    <div class="trmp_file_area">
+                      <label for="trmp_file_upload" class="trmp_file_label">
+                        <img src="img/input_icon.png" alt="업로드 버튼 이미지" width="10px">
+                        <!-- <span>파일첨부</span> -->
+                      </label>
+                      <input type="file" id="trmp_file_upload" class="trmp_file_upload">
+                    </div>
+                    <div class="trmp_write_btn_area btn">
+                      <button>작성</button>
+                      <button>취소</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!------------------------------------------------ 리뷰 section 끝 ---------------------------------------------------------->
+
+    <!------------------------------------------------footer 들어갈 자리---------------------------------------------------------->
+  </div>
+</body>
+</html>

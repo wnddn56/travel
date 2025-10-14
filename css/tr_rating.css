@@ -1,0 +1,29 @@
+/* ── 별점 폼 ─────────── */
+  .tr_starForm{ margin-top:12px; }
+
+  /* 첫 번째 행(라벨/별 버튼) */
+  .tr_starForm > div:first-of-type{
+    display:grid; grid-template-columns:90px 1fr; gap:10px; align-items:center; margin:10px 0;
+  }
+  .tr_starForm strong{ font-weight:700; }
+
+  /* 별 버튼 기본 스타일 */
+  .tr_starBox button[role="radio"]{
+    font-size:26px; line-height:1; background:none; border:0; cursor:pointer; padding:0 2px;
+    color:#d1d5db; /* var(--star-gray) */
+  }
+
+  /* 실시간 안내 문구 */
+  /*.tr_ratingLive{ margin:6px 0 0; font-size:.95rem; color:#666; }*/
+  /* 제출/리셋 버튼 영역 */
+  .tr_starForm > div:last-of-type{
+    display:flex; gap:8px; justify-content:flex-end; margin-top:8px;
+  }
+  .tr_starForm button[type="submit"]{
+    height:38px; padding:0 14px; border:0; border-radius:8px; 
+    cursor:pointer; font-weight:700; background:#111; color:#fff;
+  }
+  .tr_starForm button[type="reset"]{
+    height:38px; padding:0 14px; border:0; border-radius:8px; 
+    cursor:pointer; font-weight:700; background:#f3f4f6;
+  }

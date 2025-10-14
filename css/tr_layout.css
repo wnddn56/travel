@@ -1,0 +1,10 @@
+/*header*/
+#trmp_header{background-color: #404040; color: #fff; font-size: 20px; letter-spacing: 0.5em; padding: 3px;} /* 헤더 배경/글자색/패딩 */
+#trmp_header h2{text-align: center;margin: 1% 0;}                      /* 제목 중앙 정렬 + 상하 마진 */
+
+/*body*/
+body {margin: 0 auto;padding: 0;width: 1400px;}                   /* 본문 폭 고정, 가운데 정렬 */
+
+/*googleMap*/
+#trmp_map {width: 75%;height: 400px;margin: 1em auto;background: #ddd;} /* 지도 박스: 75% 폭, 가운데, 높이 지정 */
+#trmp_map { height: 320px; min-height: 320px; }

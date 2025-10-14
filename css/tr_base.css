@@ -1,0 +1,35 @@
+*{font-family:'Times New Roman', Times, serif} /* 전체 폰트 지정 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+:root{
+   선택: 변수만 등록(사용 강제 아님)
+  --ink:#111;
+  --bg:#fff;
+  --header-bg:#404040;   //기존 헤더 배경색 
+  --muted:#7f7f7f;
+  --border:#e5e7eb;
+  --card-border:#ccc;
+  --star-gray:#d1d5db;   //rating.css 설명에 맞춘 회색 
+}
+
+스크린리더 전용 유틸 
+.sr-only{
+  position:absolute !important; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+*/
