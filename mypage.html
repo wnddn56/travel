@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <!-- Google Maps Script -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g"></script>
+  <script src="/js/jquery-3.7.1.min.js"></script>
+  <script src="js/mypage.js"></script>
+  <link rel="stylesheet" href="css/mypage_stlye.css">
+
+  <script>
+    /*
+      1.지도에 마커 찍으면 후기 작성 div 보이기
+      2.작성 완료되면 작성div는 안보이고 내용 보이기
+    
+      4.별점기능
+    */
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div id="header">
+      <h2>My page</h2>
+    </div>
+    <div id="body">
+      <!--지도 영역 -->
+      <div id="map"></div>
+      <!--후기 영역-->
+      <div>
+        <ul class="review_list">
+          <!--후기 작성시 동적 li 추가-->
+          <li>
+            <div class="card">
+              <!--리뷰 헤드 = 제목(마커로 찍은 지역명) / 펼쳐보기 버튼-->
+              <div class="card_head">
+                <h3>제목</h3>
+                <div class="expend_btn_area">
+                  <button>
+                    <img src="img/down.png" width="30">
+                  </button>
+                </div>
+              </div>
+              <!--리뷰 컨텐츠 = 수정삭제 버튼 / 내용 /등록날짜-->
+              <div class="card_body off">
+                  <!--게시글 노출-->
+                  <div class="content_box off">
+                    <div class="content_view_area">
+                      <!--내용 노출되는 곳-->
+                    </div>
+                    <!--수정삭제 버튼영역-->
+                    <div class="btn_area">
+                      <button class="set_btn">⁝</button>
+                      <!--display none 처리 후 버튼 클릭시 노출되게-->
+                      <ul class="btn_ul off">
+                        <li>수정</li>
+                        <li>삭제</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--게시글 작성-->
+                  <div class="content_write_area">
+                  <div>
+
+                  <!--별점폼-->
+                  <div>
+                    <form class="tr_starForm" autocomplete="off">
+                    <div>
+                      <strong>별점</strong>
+                      <!-- WAI-ARIA: role="radiogroup" + 각 버튼 role="radio" -->
+                      <div class="tr_starBox" role="radiogroup" aria-label="별점 선택">
+                        <button type="button" data-val="1" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="2" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="3" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="4" aria-checked="false" role="radio">★</button>
+                        <button type="button" data-val="5" aria-checked="false" role="radio">★</button>
+                        <input type="hidden" name="rating" class="tr_ratingVal" value="0"> <!-- 실제 전송 값 -->
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+
+
+                    <!--내용작성-->
+                    <div class="text_area_box">
+                      <textarea class="text_area" rows="6" disabled></textarea>
+                    </div>
+                    <!--파일첨부-->
+                    <div class="file_area">
+                      <label for="file_upload" class="file_label">
+                        <img src="img/input_icon.png" alt="업로드 버튼 이미지" width="10px">
+                        <!-- <span>파일첨부</span> -->
+                      </label>
+                      <input type="file" id="file_upload" class="file_upload">
+                    </div>
+                    <div class="write_btn_area btn">
+                      <button type="submit">작성</button>
+                      <button type="reset">취소</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+    <!--footer-->
+  </div>
+
+<script>
+  let map;
+  let marker;
+  const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let labelIndex = 0;
+  let markers = []; // 마커를 저장할 배열
+
+
+  function initMap() {
+    // 초기 맵 설정 (서울 시청 좌표 기준 예시)
+    const initialLocation = { lat: 37.5665, lng: 126.9780 };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: initialLocation,
+      zoom: 14,
+    });
+
+    google.maps.event.addListener(map, "click", function(event) {
+      marker = new google.maps.Marker({
+        position: event.latLng,
+        label: labels[labelIndex++ % labels.length],
+        draggable:true,
+        map: map
+      });
+      markers.push(marker);
+      console.log(markers[0]);
+      
+    // 좌표
+    const lat = event.latLng.lat().toFixed(5);
+    const lng = event.latLng.lng().toFixed(5);
+
+    // jQuery로 li 템플릿 생성
+    const $li = $(`
+      <li>
+        <div class="card">
+          <div class="card_head">
+            <h3>리뷰 (${lat}, ${lng})</h3>
+            <div class="expend_btn_area">
+              <button>
+                <img src="img/down.png" width="30">
+              </button>
+            </div>
+          </div>
+          <div class="card_body off">
+            <div class="content_write_area">
+              <form class="tr_starForm" autocomplete="off">
+                <div>
+                  <strong>별점</strong>
+                  <div class="tr_starBox" role="radiogroup" aria-label="별점 선택">
+                    <button type="button" data-val="1">★</button>
+                    <button type="button" data-val="2">★</button>
+                    <button type="button" data-val="3">★</button>
+                    <button type="button" data-val="4">★</button>
+                    <button type="button" data-val="5">★</button>
+                    <input type="hidden" name="rating" class="tr_ratingVal" value="0">
+                  </div>
+                </div>
+              </form>
+              <div class="text_area_box">
+                <textarea class="text_area" rows="6"></textarea>
+              </div>
+              <div class="file_area">
+                <label for="file_upload_${lat}_${lng}" class="file_label">
+                  <img src="img/input_icon.png" alt="업로드 버튼 이미지" width="10px">
+                </label>
+                <input type="file" id="file_upload_${lat}_${lng}" class="file_upload">
+              </div>
+              <div class="write_btn_area btn">
+                <button type="submit">작성</button>
+                <button type="reset">취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    `);
+
+    // review_list에 append
+    $(".review_list").append($li);
+    });
+  }
+  window.onload = initMap;
+</script>
+
+
+
+</body>
+</html>

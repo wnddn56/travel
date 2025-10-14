@@ -1,0 +1,70 @@
+*{font-family: Arial, sans-serif;}
+/*header*/
+#header{background-color: #41E9C2; color: #fff; padding: 3px;}
+#header h2{text-align: center;margin: 1% 0;}
+
+/*body*/
+body {margin: 0 auto;padding: 0;width: 1400px;}
+.review_list{list-style: none;width: 77%; padding: 0;margin: 0 auto;}
+.card{border: 1px solid #ccc; border-radius: 8px; margin:10px;}
+
+/*card_head*/
+.card_head{display: flex;justify-content: space-between;padding: 5px 10px;background-color: #41E9C2;}
+.card_head h3{margin:0.4em 0 0 0.4em; color: #fff;}
+.card_head a{margin:0 10px 0 0; text-decoration: none;}
+
+/*card_body*/
+.card_body{padding: 15px;display:flex;flex-direction: column;justify-content: space-around; box-sizing: border-box;}
+
+/*내용 보이는 영역*/
+.content_box{display: flex;justify-content: space-between;}
+.content_view_area{width: 100%; padding: 10px 5px;}
+
+/*수정삭제 버튼*/
+.btn_area{position: relative;}
+.set_btn{font-size: 18px;border: 0;background: #fff;color: #7f7f7f;}
+.btn_ul{display: none;list-style: none;padding: 0; position: absolute; width: 65px;top: 10px;right: 10px;background-color: #fff;border-radius: 5px;z-index: 999; }
+.btn_ul > li{text-align: center; padding: 5px;border:1px solid #e3e3e3}
+
+/*내용작성 영역*/
+.text_area_box{margin: 10px 0;width: 100%;}
+.text_area{resize: none; width: 100%; border: 1px solid #ccc; border-radius: 5px; padding: 10px;box-sizing: border-box;}
+
+/*파일첨부*/
+.file_area{margin-left: 3px; display: inline-block;}
+.file_label > img{width: 25px;padding-top: 4px;opacity: 0.4;}
+.file_upload{display: none;}
+.write_btn_area{float: right;}
+.expend_btn_area > button,.write_btn_area > button{border: 0; background-color: #41E9C2; color: #fff;font-size: 20px;border-radius: 5px;font-weight: bold; padding:6px;}
+
+.on{display: block;}
+.off{display: none;}
+
+
+/*googleMap*/
+#map {width: 75%;height: 400px;margin: 1em auto;background: #ddd;}
+
+/*별점*/
+.tr_starForm{ margin-top:12px; }
+
+  /* 첫 번째 행(라벨/별 버튼) */
+.tr_starForm > div:first-of-type{
+    display:grid; grid-template-columns:90px 1fr; gap:10px; align-items:center; margin:10px 0;
+}
+.tr_starForm strong{ font-weight:700; }
+
+  /* 별 버튼 기본 스타일 */
+.tr_starBox button[data-val]{
+    font-size:26px; line-height:1; background:none; border:0; cursor:pointer; padding:0 2px;
+    color:#d1d5db; /* var(--star-gray) */
+}
+  /* 제출/리셋 버튼 영역 */
+.tr_starForm > div:last-of-type{
+    display:flex; gap:8px; justify-content:flex-end; margin-top:8px;
+}
+.tr_starForm button[type="submit"]{
+    height:38px; padding:0 14px; border:0; border-radius:8px; cursor:pointer; font-weight:700; background:#111; color:#fff;
+}
+.tr_starForm button[type="reset"]{
+    height:38px; padding:0 14px; border:0; border-radius:8px; cursor:pointer; font-weight:700; background:#f3f4f6;
+}
