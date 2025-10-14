@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="preload" href="img/bg_1.jpg" as="image">
-    <link rel="preload" href="img/bg_2.jpg" as="image">
-    <link rel="preload" href="img/bg_3.jpg" as="image">
-    <link rel="preload" href="img/bg_4.jpg" as="image">
+    <link rel="preload" href="img/bg/bg_1.jpg" as="image">
+    <link rel="preload" href="img/bg/bg_2.jpg" as="image">
+    <link rel="preload" href="img/bg/bg_3.jpg" as="image">
+    <link rel="preload" href="img/bg/bg_4.jpg" as="image">
     <style>
         body{
-            background-image: url('img/bg_1.jpg'); /* 첫번째 이미지..... */
+            background-image: url('img/bg/bg_1.jpg'); /* 첫번째 이미지..... */
             background-size: cover; /* 전체 화면에 맞게 배경 크기 조절 */
             background-position: center;
             background-repeat: no-repeat; /* 배경 반복 없음  */
@@ -20,10 +20,10 @@
             align-items: center;
         }
         @keyframes slide{
-            0% { background-image: url('img/bg_1.jpg');}
-            25% { background-image: url('img/bg_2.jpg');}
-            50% { background-image: url('img/bg_3.jpg');}
-            75% { background-image: url('img/bg_4.jpg');}
+            0% { background-image: url('img/bg/bg_1.jpg');}
+            25% { background-image: url('img/bg/bg_2.jpg');}
+            50% { background-image: url('img/bg/bg_3.jpg');}
+            75% { background-image: url('img/bg/bg_4.jpg');}
         }
         #totalForm{
             margin-top: 25vh;
@@ -96,8 +96,8 @@
             <input type="password" id="tr_psw">
             <p id="psw_warring"></p>
             <div id="reg_box">
-                <p class="reg"><a href="">회원가입</a></p>
-                <p class="reg"><a href = "">아이디 / 비밀번호 찾기</a></p>
+                <p class="reg"><a href="tr_signup.html">회원가입</a></p>
+                <p class="reg"><a href = "tr_findaccount.html">아이디 / 비밀번호 찾기</a></p>
             </div>
             <button type="submit" id="login_btn">로그인</button>
         </form>
