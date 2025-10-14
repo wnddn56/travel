@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <link rel="stylesheet" href="css/tr_signup.css">
+</head>
+<body class="tr_create">
+  <div class="tr_signUpcontainer">
+    <h1>회원가입</h1>
+      <div class="tr_signUp">
+        <form>
+          <div class="idInput">   <!-- 아이디 -->
+            <input type="text" id="tr_id" class="trInput" placeholder="아이디(영문자, 숫자포함5~15자)">
+            <button type="button" id="dupCheck">중복확인</button>
+             <!-- 중복확인 버튼 iput안에 -->
+            <p id="resultId"></p> <!-- id 유효성검사 -->
+          </div>
+          <div class="pwInput">    <!-- 비밀번호 -->
+            <input type="password" id="tr_pw" class="trInput" placeholder="비밀번호(영대소문자, 숫자 및 특수문자 포함 8~20자)">
+            <p id="resultPw"></p> <!-- pw 유효성검사 -->
+            </div>
+          <div class="pwVerInput">  <!-- 비밀번호 확인 -->
+            <input type="password" id="tr_pwVer" class="trInput" placeholder="비밀번호 확인">
+            <p id="resultPwVer"></p> <!-- pw 유효성검사 -->
+          </div>
+          <div class="emailInput"> <!-- 이메일 -->
+            <input type="email" id="tr_email" class="trInput" placeholder="이메일">
+            <p id="resultEmail"></p> <!-- email 유효성검사 -->
+          </div>
+          <div class="tr_terms">
+            <input type="checkbox" id="tr_check" name="agree" value="agree"><label for="tr_check"></label>  <!-- 체크박스 이미지 css로 변경-->
+            필수 이용약관 동의 <a href="#">(전문보기)</a>
+          </div>
+          <button type="submit" id="signUpBtn">회원가입</button>
+        </form>
+      </div>  
+  </div>
+  <script src="js/tr_signup.js"></script>
+</body>
+</html>
