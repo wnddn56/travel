@@ -62,4 +62,51 @@ $(document).ready(function(){
         paintStars($stars, $hidden, 0);
     });
 
+    // 1015_추가 
+     //이미지 미리보기
+    $(document)
+    .off('change.preview') 
+    .on('change.preview', '.file_upload', function () {
+    const input = this;
+    const $writeArea = $(input).closest('.content_write_area');
+
+    // 별점 폼라인에 같이 위에 미리보기
+    const $starForm = $writeArea.find('.tr_starForm').first();
+
+    //별점 폼 라인
+    let $row = $writeArea.find('.tr_starRow');
+    if(!$row.length) {
+        $row = $('<div class="tr_starRow"></div>')
+        $row.insertBefore($starForm);
+        $row.append($starForm);
+    }
+
+    //별점 폼 라인에 같이 보이게 
+    let $preview = $row.find('.file_preview');
+    if(!$preview.length) {
+        $preview = $('<div class="file_preview"></div>');
+        $row.prepend($preview); // 왼쪽엔 사진 미리보기, 오른쪽엔 별점.
+    }
+
+    // 첨부파일 최대 8개
+    const current = $preview.children().length;
+    const MAX = 8;
+    const remain = MAX - current;
+    if (remain <=0) {
+        alert('최대 8개까지 첨부 가능합니다.')
+        return;
+    }
+    // 이미지만 미리보기 (파일명 X)
+    Array.from(input.files).forEach((file) => {
+      if (!file.type || !file.type.startsWith('image/') || file.type.startsWith('video/')) return; //사진 또는 이미지
+      const url = URL.createObjectURL(file); // 브라우저 내부에서 보이는 임시url로 바꿔야 보임.
+      const $img = $(
+        `<img alt="첨부 이미지 미리보기"
+              src="${url}"
+              style="max-width:100%; height:auto; display:block; border-radius:8px; margin-top:6px;">`
+      );
+      $img.on('load', () => URL.revokeObjectURL(url));
+      $preview.append($img);
+    });
+  });
 });
