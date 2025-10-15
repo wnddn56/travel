@@ -112,6 +112,26 @@ function emailCheck(){
 };
 tr_email.addEventListener('input', emailCheck);
 
+//약관 팝업
+const modal = document.querySelector("#tr_termsModal");
+const openBtn = document.querySelector(".tr_terms a");
+const closeBtn = document.querySelector(".close");
+//팝업 열기
+openBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  modal.style.display = "block";
+});
+//팝업 닫기
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+})
+// 모달 바깥 클릭 시 닫기
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
 //회원가입버튼 이벤트
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
