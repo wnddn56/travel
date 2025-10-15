@@ -3,86 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FristPage</title>
+    <link rel="stylesheet" href="css/firstPage.css">
     <link rel="preload" href="img/bg/bg_1.jpg" as="image">
     <link rel="preload" href="img/bg/bg_2.jpg" as="image">
     <link rel="preload" href="img/bg/bg_3.jpg" as="image">
     <link rel="preload" href="img/bg/bg_4.jpg" as="image">
-    <style>
-        body{
-            background-image: url('img/bg/bg_1.jpg'); /* 첫번째 이미지..... */
-            background-size: cover; /* 전체 화면에 맞게 배경 크기 조절 */
-            background-position: center;
-            background-repeat: no-repeat; /* 배경 반복 없음  */
-            animation: slide 15s infinite; 
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-        }
-        @keyframes slide{
-            0% { background-image: url('img/bg/bg_1.jpg');}
-            25% { background-image: url('img/bg/bg_2.jpg');}
-            50% { background-image: url('img/bg/bg_3.jpg');}
-            75% { background-image: url('img/bg/bg_4.jpg');}
-        }
-        #totalForm{
-            margin-top: 25vh;
-            height: 50vh;
-        }
-        h1{
-            width: 100%;
-            background: linear-gradient(90deg,#BF5AC8,#9596E2,#41E9C2);
-            color: transparent;
-            background-clip: text;
-            font-size: 3.5em;
-            text-align: center;
-        }
-        #register{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-        form{
-            padding: 20px;
-            border: 1px solid black;
-            border-radius: 10px;
-            margin: 10px, auto;
-        }
-        p{
-            margin: 5px;
-        }
-        input{
-            width: 350px;
-            height: 40px;
-            box-sizing: border-box;
-            border-radius: 10px;
-        }
-        #reg_box{
-            display: flex;
-            justify-content:space-between;
-        }
-        .reg{
-            font-size: 1em;
-            text-align: right;
-        }
-        button{
-            width: 350px;
-            height: 40px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            background-image: linear-gradient(90deg,#BF5AC8,#9596E2,#41E9C2);
-            font-size: 20px;
-            color: white;
-        }
-        #id_warring{
-            font-size: 0.8em;
-        } 
-        #psw_warring{
-            font-size: 0.8em;
-        }   
-        a:visited { color:black; }
-
-    </style>
 </head>
 <body>
     <div id="totalForm">
@@ -91,10 +17,10 @@
         <form>
             <p>아이디</p>
             <input type="text" id="tr_id">
-            <p id="id_warring"></p>
+            <div id="id_warring"></div>
             <p>비밀번호</p>
             <input type="password" id="tr_psw">
-            <p id="psw_warring"></p>
+            <div id="psw_warring"></div>
             <div id="reg_box">
                 <p class="reg"><a href="tr_signup.html">회원가입</a></p>
                 <p class="reg"><a href = "tr_findaccount.html">아이디 / 비밀번호 찾기</a></p>
@@ -103,39 +29,6 @@
         </form>
     </div>
     </div>
-    <script>
-        let tr_id = document.getElementById('tr_id');
-        let tr_psw = document.getElementById('tr_psw');
-        let form = document.querySelector('form');
-        let login_btn = document.getElementById('login_btn');
-
-        function validateId(){
-            let tr_id_test = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,20}$/.test(tr_id.value);
-            if(tr_id_test){
-                document.getElementById('id_warring').innerHTML = "사용가능한 아이디 입니다."
-                document.getElementById('id_warring').style.color = "#41E9C2"
-                return true;    
-            }else{
-                document.getElementById('id_warring').innerHTML = "아이디는 5~20자 영문자 숫자 조합만 가능합니다."
-                document.getElementById('id_warring').style.color = "red"
-                return false;
-            }
-        }
-
-        function validatePw(){
-            let tr_psw_test = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!.@#$%^&*])[A-Za-z\d!@#$%^&*]{6,12}$/.test(tr_psw.value);
-            if(tr_psw_test){
-                document.getElementById('psw_warring').innerHTML = "사용가능한 비밀번호 입니다."
-                document.getElementById('psw_warring').style.color = "#41E9C2"  
-                return true;  
-            }else{
-                document.getElementById('psw_warring').innerHTML = "비밀번호는 6~12자리 영문자 숫자 특수문자 조합만 가능합니다."
-                document.getElementById('psw_warring').style.color = "red" 
-                return false;
-            }
-        }
-        tr_id.addEventListener("blur",validateId)
-        tr_psw.addEventListener("blur",validatePw)
-    </script>
+    <script src="js/fistPage.js"></script>
 </body>
 </html>
