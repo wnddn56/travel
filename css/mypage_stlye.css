@@ -10,8 +10,10 @@ body {margin: 0 auto;padding: 0;width: 1400px;}
 
 /*card_head*/
 .card_head{display: flex;justify-content: space-between;padding: 5px 10px;background-color: #41E9C2;}
-.card_head h3{margin:0.4em 0 0 0.4em; color: #fff;}
-.card_head a{margin:0 10px 0 0; text-decoration: none;}
+.card_head h3{margin:0.4em 0 0 0.4em; color: #fff; width: 90%;}
+.card_head h3 input{display: none; width: 80%; border: 1px solid #ccc; border-radius: 5px; padding: 8px;box-sizing: border-box;}
+.card_head a{ margin:0 10px 0 10px; text-decoration: none; font-size: 1rem; width: 15%;}
+.card_head a:hover{ margin:0 10px 0 10px; text-decoration: underline; font-size: 1rem;}
 
 /*card_body*/
 .card_body{padding: 15px;display:flex;flex-direction: column;justify-content: space-around; box-sizing: border-box;}
@@ -37,8 +39,8 @@ body {margin: 0 auto;padding: 0;width: 1400px;}
 .write_btn_area{float: right;}
 .expend_btn_area > button,.write_btn_area > button{border: 0; background-color: #41E9C2; color: #fff;font-size: 20px;border-radius: 5px;font-weight: bold; padding:6px;}
 
-.on{display: block;}
-.off{display: none;}
+.on{display: block !important;}
+.off{display: none !important;}
 
 
 /*googleMap*/
@@ -68,3 +70,37 @@ body {margin: 0 auto;padding: 0;width: 1400px;}
 .tr_starForm button[type="reset"]{
     height:38px; padding:0 14px; border:0; border-radius:8px; cursor:pointer; font-weight:700; background:#f3f4f6;
 }
+
+/* 1015 이미지 미리보기 */
+/* 별점과 미리보기 한 줄에 배치 */
+.tr_starRow{
+  display: flex;
+  align-items:flex-start;
+  gap: 12px;
+}
+/*왼쪽: 미리보기*/
+.tr_starRow .file_preview{
+  display: flex;
+  flex-wrap:wrap;
+}
+
+/*오른쪽: 별점*/
+.tr_starRow .tr_starForm{
+  flex:0 0 auto;
+}
+
+/* 미리보기 사진/동영상 */
+.file_preview { 
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 미리보기 사진/동영상 사이즈 */
+.file_preview img, .file_preview video { 
+  width: 180px;
+  height: 250px;
+  object-fit: cover; /*꽉 차게*/
+  border-radius: 6px;
+  display: block;
+ }

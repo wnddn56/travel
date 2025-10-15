@@ -6,7 +6,7 @@ $(document).ready(function(){
 
         // 버튼 화살표 이미지 교체 (down ↔ up)
         const $img = $(this).find('.expend_btn_area img');
-        $img.attr('src', $body.hasClass('on') ? 'img/up.png' : 'img/down.png');
+        $img.attr('src', $body.hasClass('on') ? 'img/icon/up.png' : 'img/icon/down.png');
     });
 
     // btn_area 버튼 클릭 시 적용
@@ -15,6 +15,10 @@ $(document).ready(function(){
         toggleOnOff($ul);
     });
 
+    $(document).on('click', '.tr_subject_self',function(){
+        const $tr_subject = $('#tr_subject');
+        toggleOnOff($tr_subject);
+    })
     // on/off 토글 함수
     function toggleOnOff(element) {
         const $el = $(element);
