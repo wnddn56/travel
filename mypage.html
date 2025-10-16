@@ -5,6 +5,7 @@
   <title>My Page</title>
   <!-- Google Maps Script -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g&libraries=places&callback=initMap" async defer></script>
+  
   <script src="/js/jquery-3.7.1.min.js"></script>
   <script src="js/mypage.js"></script>
   <link rel="stylesheet" href="css/mypage_stlye.css">
@@ -129,7 +130,7 @@
       center: initialLocation,
       zoom: 14,
     });
-
+    
     //맵 클릭시 마커 생성
     google.maps.event.addListener(map, "click", function(event) {
     marker = new google.maps.Marker({
@@ -157,16 +158,54 @@
         }
       })
     }
-    geocodeLatLng(geocoder, map, infowindow, event)
-    .then((addr) => {
+    
+    const service = new google.maps.places.PlacesService(map);
+    function getPlaceName(latLng) {
+      return new Promise((resolve) => {
+        const geocoder = new google.maps.Geocoder();
 
+        geocoder.geocode({ location: latLng }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK && results[0]) {
+            // 주소 결과에서 place_id 추출
+            const placeId = results[0].place_id;
+            if (placeId) {
+              const service = new google.maps.places.PlacesService(map);
+              service.getDetails({ placeId: placeId }, (place, status2) => {
+                console.log(placeId);
+                if (
+                  status2 === google.maps.places.PlacesServiceStatus.OK &&
+                  place &&
+                  place.name
+                ) {
+                  resolve(place.name); // ✅ 정확한 장소명 반환
+                } else {
+                  // place.name이 없을 경우 주소명으로 대체
+                  resolve(results[0].formatted_address.split(" ")[0]);
+                }
+              });
+            } else {
+              resolve("장소 이름 없음");
+            }
+          } else {
+            resolve("장소 이름 없음");
+          }
+        });
+      });
+    }
+    geocodeLatLng(geocoder, map, infowindow, event)
+    Promise.all([
+        geocodeLatLng(geocoder),
+        getPlaceName(event.latLng),
+    ])
+    .then(([addr, placeName]) => {
+console.log(placeName);
     //li 템플릿 생성
     const $li = $(`
       <li>
         <div class="card">
           <div class="card_head">
             <div class="card_title">
-              <h3>리뷰 (${lat}, ${lng})</h3>
+              <h3>${placeName} (${lat}, ${lng})</h3>
               <label>
                 ${addr}
               </label>
