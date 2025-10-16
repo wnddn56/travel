@@ -163,7 +163,7 @@
     function getPlaceName(latLng) {
       return new Promise((resolve) => {
         const geocoder = new google.maps.Geocoder();
-
+        //
         geocoder.geocode({ location: latLng }, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK && results[0]) {
             // 주소 결과에서 place_id 추출
