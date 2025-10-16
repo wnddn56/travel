@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>My Page</title>
   <!-- Google Maps Script -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g&libraries=places&callback=initMap" async defer></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g&libraries=places&callback=initMap" async defer></script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g&libraries=places&v=weekly&callback=initMap" async defer></script>
+
   
   <script src="/js/jquery-3.7.1.min.js"></script>
   <script src="js/mypage.js"></script>
@@ -160,31 +162,39 @@
     }
     
     const service = new google.maps.places.PlacesService(map);
+
+    function getPlaceDetails(placeId) {
+      const service = new google.maps.places.PlacesService(map);
+      return new Promise((resolve, reject) => {
+        service.getDetails(
+          { placeId: placeId, fields: ["name", "formatted_address"] }, 
+          (place, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              resolve(place);
+            } else {
+              reject(status);
+            }
+          }
+        );
+      });
+    }
+
+    //장소명
     function getPlaceName(latLng) {
-      return new Promise((resolve) => {
+      return new Promise(async (resolve) => {
         const geocoder = new google.maps.Geocoder();
-        //
-        geocoder.geocode({ location: latLng }, (results, status) => {
+        geocoder.geocode({ location: latLng }, async (results, status) => {
           if (status === google.maps.GeocoderStatus.OK && results[0]) {
-            // 주소 결과에서 place_id 추출
             const placeId = results[0].place_id;
             if (placeId) {
-              const service = new google.maps.places.PlacesService(map);
-              service.getDetails({ placeId: placeId }, (place, status2) => {
-                console.log(placeId);
-                if (
-                  status2 === google.maps.places.PlacesServiceStatus.OK &&
-                  place &&
-                  place.name
-                ) {
-                  resolve(place.name); // ✅ 정확한 장소명 반환
-                } else {
-                  // place.name이 없을 경우 주소명으로 대체
-                  resolve(results[0].formatted_address.split(" ")[0]);
-                }
-              });
+              try {
+                const place = await getPlaceDetails(placeId);
+                resolve(place.name || results[0].formatted_address.split(" ")[0]);
+              } catch {
+                resolve(results[0].formatted_address.split(" ")[0]);
+              }
             } else {
-              resolve("장소 이름 없음");
+              resolve(results[0].formatted_address.split(" ")[0]);
             }
           } else {
             resolve("장소 이름 없음");
@@ -192,13 +202,14 @@
         });
       });
     }
+
     geocodeLatLng(geocoder, map, infowindow, event)
     Promise.all([
         geocodeLatLng(geocoder),
         getPlaceName(event.latLng),
     ])
     .then(([addr, placeName]) => {
-console.log(placeName);
+    console.log(placeName);
     //li 템플릿 생성
     const $li = $(`
       <li>
