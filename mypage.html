@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>My Page</title>
   <!-- Google Maps Script -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mkeIzzI2qWMgheafMWpuzRIASK9U05g&libraries=places&callback=initMap" async defer></script>
   <script src="/js/jquery-3.7.1.min.js"></script>
   <script src="js/mypage.js"></script>
   <link rel="stylesheet" href="css/mypage_stlye.css">
@@ -118,73 +118,59 @@
   let labelIndex = 0;
   let markers = []; // 마커를 저장할 배열
 
+  let addr;
+  let place_id;
+
 
   function initMap() {
     // 초기 맵 설정 (서울 시청 좌표 기준 예시)
     const initialLocation = { lat: 37.5665, lng: 126.9780 };
-
     map = new google.maps.Map(document.getElementById("map"), {
       center: initialLocation,
       zoom: 14,
     });
 
+    //맵 클릭시 마커 생성
     google.maps.event.addListener(map, "click", function(event) {
-
-      // 좌표
-      const lat = event.latLng.lat().toFixed(5);
-      const lng = event.latLng.lng().toFixed(5);
-      
-      //역지오코딩
-      const geocoder = new google.maps.Geocoder();
-      const infowindow = new google.maps.InfoWindow();
-      //역지오코딩 함수 실행
-      geocodeLatLng(geocoder, map, infowindow);
-      
-      function geocodeLatLng(geocoder, map, infowindow){
-//         geocoder
-//   .geocode({ location: event.latLng })
-//   .then((response) => {
-//     if (response.results[0]) {
-//       infowindow.setContent(response.results[0].formatted_address);
-//       infowindow.open(map, marker);
-//       console.log("주소:", response.results[0].formatted_address);
-//     }
-//   })
-//   .catch((e) => console.error("Geocode (location) 실패:", e));
-
-// // 2️⃣ 필요하다면, 별도로 placeId 검색 실행
-// geocoder
-//   .geocode({ placeId: "ChIJN1t_tDeuEmsRUsoyG83frY4" })
-//   .then((response) => {
-//     if (response.results[0]) {
-//       console.log("placeId로 가져온 장소명:", response.results[0].formatted_address);
-//     }
-//   })
-//   .catch((e) => console.error("Geocode (placeId) 실패:", e));
-        geocoder
-        .geocode({ location: event.latLng})
-        .then((response) => {
-          if (response.results[0]) {
-            map.setZoom(11);
-            marker = new google.maps.Marker({
+    marker = new google.maps.Marker({
               position: event.latLng,
               map: map,
               label: labels[labelIndex++ % labels.length],
               draggable:true,
-            });
-            markers.push(marker);
-            infowindow.setContent(response.results[0].formatted_address);
-            infowindow.open(map, marker);
-          }
-        })
-      }
+    });
+    markers.push(marker);
 
-    // jQuery로 li 템플릿 생성
+    // 좌표
+    const lat = event.latLng.lat().toFixed(5);
+    const lng = event.latLng.lng().toFixed(5);
+    
+    //주소값 호출
+    const geocoder = new google.maps.Geocoder();
+    const infowindow = new google.maps.InfoWindow();
+    
+    function geocodeLatLng(geocoder, map, infowindow){
+      return geocoder
+      .geocode({ location: event.latLng})
+      .then((response) => {
+        if (response.results[0]) {
+          return response.results[0].formatted_address;
+        }
+      })
+    }
+    geocodeLatLng(geocoder, map, infowindow, event)
+    .then((addr) => {
+
+    //li 템플릿 생성
     const $li = $(`
       <li>
         <div class="card">
           <div class="card_head">
-            <h3>리뷰 (${lat}, ${lng})</h3>
+            <div class="card_title">
+              <h3>리뷰 (${lat}, ${lng})</h3>
+              <label>
+                ${addr}
+              </label>
+            </div>
             <div class="expend_btn_area">
               <button>
                 <img src="img/icon/down.png" width="30">
@@ -210,10 +196,11 @@
                 <textarea class="text_area" rows="6"></textarea>
               </div>
               <div class="file_area">
-                <label for="file_upload_${lat}_${lng}" class="file_label">
-                  <img src="img/icon/input_icon.png" alt="업로드 버튼 이미지" width="10px">
-                </label>
-                <input type="file" id="file_upload_${lat}_${lng}" class="file_upload">
+                      <label for="file_upload_${lat}_${lng}" class="file_label" multiple>
+                        <img src="img/icon/input_icon.png" alt="업로드 버튼 이미지" width="10px">
+                        <!-- <span>파일첨부</span> -->
+                      </label>
+                      <input type="file" id="file_upload_${lat}_${lng}" class="file_upload" multiple>
               </div>
               <div class="write_btn_area btn">
                 <button type="submit">작성</button>
@@ -224,11 +211,12 @@
         </div>
       </li>
     `);
-
-    // review_list에 append
-    $(".review_list").append($li);
+     // review_list에 append
+      $(".review_list").append($li);
+        });
     });
   }
+  
   window.onload = initMap;
 </script>
 
